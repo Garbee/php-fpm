@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y autoconf file g++ gcc libc-dev make pkg
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN mkdir -p $PHP_INI_DIR/conf.d
 
-ENV PHP_VERSION 7.0.0RC6
+ENV PHP_VERSION 7.0.1
 
 RUN buildDeps=" \
 		$PHP_EXTRA_BUILD_DEPS \
@@ -25,10 +25,10 @@ RUN buildDeps=" \
 	" \
 	&& set -x \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
-	&& curl -SL "https://downloads.php.net/~ab/php-$PHP_VERSION.tar.bz2" -o php.tar.bz2 \
+	&& curl -SL "http://us2.php.net/get/php-$PHP_VERSION.tar.xz/from/this/mirror" -o php.tar.xz \
 	&& mkdir -p /usr/src/php \
-	&& tar -xof php.tar.bz2 -C /usr/src/php --strip-components=1 \
-	&& rm php.tar.bz2* \
+	&& tar -xof php.tar.xz -C /usr/src/php --strip-components=1 \
+	&& rm php.tar.xz \
 	&& cd /usr/src/php \
 	&& ./configure \
 		--with-config-file-path="$PHP_INI_DIR" \
@@ -44,7 +44,6 @@ RUN buildDeps=" \
 		--enable-exif \
 		--enable-mbstring \
 		--with-gd \
-		--with-mcrypt \
 		--with-pgsql \
 		--enable-zip \
 		--with-pdo-pgsql \
