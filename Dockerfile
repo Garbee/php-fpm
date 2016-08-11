@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
         libpq-dev \
         postgresql-client-9.4 \
         libsqlite3-dev \
-    && docker-php-ext-install iconv mcrypt pgsql bcmath mbstring \
+        unzip \
+    && docker-php-ext-install iconv mcrypt pgsql bcmath mbstring zip opcache pdo \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd pdo_sqlite pdo_pgsql
 CMD ["php-fpm"]
