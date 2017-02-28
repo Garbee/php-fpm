@@ -1,18 +1,25 @@
-FROM php:7.0-fpm
+FROM php:7.1-fpm
 MAINTAINER Jonathan Garbee <jonathan@garbee.me>
 # Install modules
-RUN apt-get update && apt-get install -y \
+RUN apt-get update -yqq && apt-get install -yqq \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libmcrypt-dev \
+        libmagickwand-dev \
         libpng12-dev \
         libpq-dev \
-        libicu-dev \
+        libbz2-dev \
         postgresql-client-9.4 \
         libsqlite3-dev \
+        libicu-dev \
         unzip \
+        curl \
+        git \
+        libcurl3-dev \
+        libxml2-dev \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install iconv mcrypt pgsql bcmath mbstring zip opcache pdo intl \
+    && docker-php-ext-install curl iconv pdo_pgsql zip bcmath mbstring intl xml opcache \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd pdo_sqlite pdo_pgsql
+    && docker-php-ext-install gd
 CMD ["php-fpm"]
